@@ -1,43 +1,26 @@
--- [[ REVISI UTAMA: BRUTE-FORCE AUTO-FARM ]] --
-_G.AutoFarm = true
+-- [[ SKRIP CLONE SPEED HUB - SPESIFIK AUTO FARM WORTEL ]] --
+local ProximityPromptService = game:GetService("ProximityPromptService")
 
-task.spawn(function()
-    local player = game:GetService("Players").LocalPlayer
-    
-    while _G.AutoFarm do
-        task.wait(0.3) -- Jeda eksekusi secepat 0.3 detik
-        pcall(function()
-            local char = player.Character
-            local hrp = char and char:FindFirstChild("HumanoidRootPart")
-            
-            if hrp then
-                -- Memindai seluruh dunia game untuk mencari tanaman/tanah
-                for _, obj in pairs(workspace:GetDescendants()) do
-                    
-                    -- JIKA GAME MENGGUNAKAN SISTEM KLIK (ClickDetector)
-                    if obj:IsA("ClickDetector") then
-                        fireclickdetector(obj)
-                    end
-                    
-                    -- JIKA GAME MENGGUNAKAN SISTEM SENTUHAN (TouchInterest)
-                    if obj:IsA("TouchTransmitter") or obj.Name == "TouchInterest" then
-                        local part = obj.Parent
-                        if part and part:IsA("BasePart") then
-                            -- Mensimulasikan kaki/tubuh karakter menyentuh tanaman secara instan
-                            firetouchinterest(hrp, part, 0)
-                            task.wait()
-                            firetouchinterest(hrp, part, 1)
-                        end
-                    end
-                    
-                end
-            end
-        end)
-    end
+ProximityPromptService.PromptShown:Connect(function(prompt)
+    pcall(function()
+        -- Mengambil teks objek dan teks tindakan, lalu diubah ke huruf kecil semua
+        local objectText = string.lower(prompt.ObjectText)
+        local actionText = string.lower(prompt.ActionText)
+        
+        -- LOGIKA PENYARINGAN (FILTER):
+        -- Hanya mengeksekusi jika objek mengandung kata "carrot" (wortel) DAN tindakan mengandung "harvest" (panen)
+        if string.find(objectText, "carrot") or string.find(actionText, "harvest") then
+            -- Simulasi klik instan secara gaib
+            prompt:InputHoldBegin()
+            task.wait(0.05) -- Jeda milidetik aman
+            prompt:InputHoldEnd()
+        end
+    end)
 end)
 
+-- Notifikasi keberhasilan pemuatan fitur filter
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Version 2.0 Active",
-    Text = "Mencoba bypass Touch & Click...",
+    Title = "Carrot Filter Active",
+    Text = "Hanya memanen wortel otomatis.",
     Duration = 5
 })
