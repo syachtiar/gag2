@@ -1,14 +1,28 @@
--- [[ SKRIP PERCOBAAN SIMPLE - SPEED HACK ]] --
-local player = game:GetService("Players").LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+-- [[ SKRIP UTAMAA AUTO-FARM GROW A GARDEN 2 ]] --
+_G.AutoFarm = true
 
--- 1. Mengubah kecepatan lari karakter menjadi lebih cepat (Default: 16)
-humanoid.WalkSpeed = 40
+task.spawn(function()
+    local player = game:GetService("Players").LocalPlayer
+    
+    while _G.AutoFarm do
+        task.wait(0.5)
+        pcall(function()
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("ProximityPrompt") then
+                    local character = player.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        obj:InputHoldBegin()
+                        task.wait(0.1)
+                        obj:InputHoldEnd()
+                    end
+                end
+            end
+        end)
+    end
+end)
 
--- 2. Memunculkan notifikasi di layar untuk bukti skrip sukses berjalan
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "GitHub Sukses!",
-    Text = "Karakter Anda sekarang berlari cepat.",
+    Title = "Auto-Farm Aktif!",
+    Text = "Skrip panen otomatis sedang berjalan.",
     Duration = 5
 })
