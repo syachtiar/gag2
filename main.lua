@@ -1,9 +1,7 @@
 -- [[ SKRIP UTAMAA AUTO-FARM GROW A GARDEN 2 ]] --
 _G.AutoFarm = true
-
 task.spawn(function()
     local player = game:GetService("Players").LocalPlayer
-    
     while _G.AutoFarm do
         task.wait(0.5)
         pcall(function()
@@ -20,9 +18,4 @@ task.spawn(function()
         end)
     end
 end)
-
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Auto-Farm Aktif!",
-    Text = "Skrip panen otomatis sedang berjalan.",
-    Duration = 5
-})
+game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Auto-Farm Aktif!", Text = "Skrip panen otomatis berjalan.", Duration = 5})
